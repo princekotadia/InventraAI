@@ -10,6 +10,7 @@ class Product(Base):
     cost_price = Column(Float)
     selling_price = Column(Float)
     current_stock = Column(Integer)
+    expiry_date = Column(Date, nullable=True)
 
 
 class Sale(Base):

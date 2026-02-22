@@ -1,0 +1,20 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+pydantic
+pytest
+httpx
+
+# Optional (enable stronger forecasting / ML features):
+scikit-learn
+statsmodels
+pandas
+# prophet (install if you want Prophet forecasting; may require pystan/extra build tools)
+# prophet
+
+# Optional for GPT integration
+openai
+
+# Vision/OCR
+pytesseract
+Pillow

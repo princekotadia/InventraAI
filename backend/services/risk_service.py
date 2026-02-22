@@ -7,10 +7,13 @@ def calculate_risk(products, sales_map):
 
         if avg_sales == 0:
             risk = "High"
+            score = 90
         elif product.current_stock > avg_sales * 10:
             risk = "Medium"
+            score = 60
         else:
             risk = "Low"
+            score = 20
 
         risk_results.append({
             "id": product.id,
@@ -18,7 +21,8 @@ def calculate_risk(products, sales_map):
             "selling_price": product.selling_price,
             "cost_price": product.cost_price,
             "current_stock": product.current_stock,
-            "risk_level": risk
+            "risk_level": risk,
+            "risk_score": score
         })
 
     return risk_results

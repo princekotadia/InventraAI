@@ -1,16 +1,69 @@
-# React + Vite
+# Inventra AI — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This frontend is a Vite + React app that interfaces with the Inventra AI FastAPI backend.
 
-Currently, two official plugins are available:
+## Quick start (frontend)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Install dependencies
 
-## React Compiler
+```bash
+cd frontend
+npm install
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+2. Run dev server
 
-## Expanding the ESLint configuration
+```bash
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The frontend dev server runs on `http://localhost:5173` by default.
+
+## Quick start (backend)
+
+The frontend expects the backend API to be available at:
+
+- `http://127.0.0.1:8000`
+
+To run the backend locally (from the `backend` folder):
+
+```bash
+python -m venv .venv
+# Windows
+.venv\Scripts\activate
+# macOS / Linux
+# source .venv/bin/activate
+
+pip install fastapi uvicorn sqlalchemy pydantic
+uvicorn main:app --reload --host 127.0.0.1 --port 8000
+```
+
+Notes:
+- If you maintain a `requirements.txt` you can instead run `pip install -r requirements.txt`.
+- The frontend's API client uses `http://127.0.0.1:8000` (see `src/api/api.js`).
+
+## Available Pages / Features
+
+- Dashboard — application overview and key metrics.
+- Add Product — create new products in the catalog.
+- Add Sale — record sales for products.
+- Products (Inventory) — table view of products with `selling_price`, cost and stock.
+- Simulation — What‑If profit simulation (change price/stock and simulate revenue/profit).
+
+## API endpoints the frontend calls
+
+- `GET /analytics/risk` — product list / risk analysis used by `Products` table.
+- `POST /analytics/simulate` — run profit simulation (body: `product_id`, `new_price`, `new_stock`).
+- `POST /products/` — create product (backend route).
+- `POST /sales/` — create sale (backend route).
+
+If you change the backend host/port, update `src/api/api.js` `baseURL` accordingly.
+
+## Troubleshooting
+
+- If product price cells appear blank in the UI, confirm the backend returns `selling_price` in the product payload and that `src/pages/ProductTable.jsx` uses `selling_price`.
+- If CORS issues appear, ensure the backend allows the frontend origin (development uses `allow_origins`="*").
+
+## Contributing
+
+Open a PR with a focused change. Run the frontend locally with `npm run dev` and the backend with `uvicorn main:app --reload` to test end-to-end.
